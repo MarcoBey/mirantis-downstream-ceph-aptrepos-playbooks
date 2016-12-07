@@ -1,0 +1,45 @@
+---
+
+- name: create subrepo directory
+  file: > 
+    path={{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/conf
+    state=directory
+    mode=0755
+
+- name: create reprepro distributions config
+  template: >
+    src=./templates/distributions.j2
+    dest={{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/conf/distributions
+    mode=0644
+  vars:
+    os_release: "{{ item.value.os_release }}"
+    os_release_numeric: "{{ item.value.os_release_numeric }}"
+    ceph_release: "{{ item.value.ceph_release }}"
+
+- name: create reprepro updates config
+  template: >
+    src=./templates/updates.j2
+    dest={{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/conf/updates
+    mode=0644
+  vars:
+    os_release: "{{ item.value.os_release }}"
+    os_release_numeric: "{{ item.value.os_release_numeric }}"
+    ceph_release: "{{ item.value.ceph_release }}"
+
+- name: copy reprepro filter config
+  copy: >
+    src=./templates/ExcludeDbgList
+    dest={{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/conf/ExcludeDbgList
+    mode=0644
+
+- name: fetch packages from main repo
+  command: >
+    reprepro -Vb{{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}
+    update {{ item.value.ceph_release }}-{{ item.value.os_release }}
+
+- name: make a subrepo tarball
+  command: >
+    tar cf {{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}.tar
+    -C {{ repo_root }}
+    {{ item.value.ceph_release }}-{{ item.value.os_release }}
+

@@ -1,0 +1,10 @@
+Origin: Alexey Sheplyakov <asheplyakov@mirantis.com>
+Label: sa-{{ ceph_release }}-{{ os_release }}
+Suite: {{ ceph_release }}-{{ os_release }}
+Codename: {{ ceph_release }}-{{ os_release }}
+Version: {{ os_release_numeric }}
+Architectures: amd64 i386 source
+Components: main
+Description: Ceph {{ ceph_release }} built for Ubuntu {{ os_release_numeric }}
+Update: update-{{ ceph_release }}-{{ os_release }}
+SignWith: {{ gpg_key_id }}!

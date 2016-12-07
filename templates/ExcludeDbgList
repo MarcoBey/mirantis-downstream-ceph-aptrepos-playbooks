@@ -1,0 +1,17 @@
+ceph-common-dbg deinstall
+ceph-dbg deinstall
+ceph-fs-common-dbg deinstall
+ceph-fuse-dbg deinstall
+ceph-mds-dbg deinstall
+ceph-test-dbg deinstall
+libcephfs1-dbg deinstall
+libcephfs-jni-dbg deinstall
+librados2-dbg deinstall
+libradosstriper1-dbg deinstall
+librbd1-dbg deinstall
+librgw2-dbg deinstall
+radosgw-dbg deinstall
+rbd-fuse-dbg deinstall
+rest-bench-dbg deinstall
+rbd-mirror-dbg deinstall
+rbd-nbd-dbg deinstall

@@ -1,0 +1,8 @@
+---
+
+- hosts: localhost
+  become: False
+  connection: local
+  tasks:
+    - include: ./tasks/subrepo.yml
+      with_dict: "{{ supported_releases }}"

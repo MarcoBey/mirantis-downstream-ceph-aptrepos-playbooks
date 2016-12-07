@@ -1,0 +1,10 @@
+Name: update-{{ ceph_release }}-{{ os_release }}
+Method: {{ src_repo_url }}
+Suite: {{ ceph_release }}-{{ os_release }}
+Components: main
+Architectures: amd64 i386 source
+{% if no_in_release|default(False) %}
+GetInRelease: no
+{% endif %}
+FilterList: install ExcludeDbgList
+VerifyRelease: {{ gpg_key_id }}

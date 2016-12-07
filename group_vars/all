@@ -1,0 +1,24 @@
+---
+
+src_repo_url: "http://172.18.76.59/Public/repos/ceph"
+repo_root: /srv/data/Public/repos/ceph-by-release
+gpg_key_id: A254F5F0
+
+supported_releases:
+  "jewel-xenial":
+    ceph_release: jewel
+    os_release: xenial
+    os_release_numeric: "16.04"
+  "jewel-trusty":
+    ceph_release: jewel
+    os_release: trusty
+    os_release_numeric: "14.04"
+  "hammer-trusty":
+    ceph_release: hammer
+    os_release: trusty
+    os_release_numeric: "14.04"
+  "firefly-trusty":
+    ceph_release: firefly
+    os_release: trusty
+    os_release_numeric: "14.04"
+

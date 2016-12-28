@@ -17,10 +17,20 @@ supported_releases:
     ceph_release: hammer
     os_release: trusty
     os_release_numeric: "14.04"
+  "hammer-precise":
+    ceph_release: hammer
+    os_release: precise
+    os_release_numeric: "12.04"
+    update: update-tcmalloc-precise
   "firefly-trusty":
     ceph_release: firefly
     os_release: trusty
     os_release_numeric: "14.04"
+  "firefly-precise":
+    ceph_release: firefly
+    os_release: precise
+    os_release_numeric: "12.04"
+    update: update-tcmalloc-precise
 
 binary_packages_with_dbg:
   - ceph-common

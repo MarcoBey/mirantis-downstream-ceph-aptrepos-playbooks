@@ -1,0 +1,22 @@
+Name: update-mos9.0
+Method: http://mirror.fuel-infra.org/mos-repos/ubuntu/9.0
+Suite: mos9.0
+Components: main
+Architectures: amd64 source
+GetInRelease: no
+VerifyRelease: BCE5CC461FA22B08
+
+Name: update-xenial
+Method: http://ru.archive.ubuntu.com/ubuntu
+Suite: xenial
+Components: main universe
+Architectures: amd64 source
+
+Name: update-mos60
+Method: http://mirror.fuel-infra.org/fwm/6.0/ubuntu
+Suite: precise
+Components: main
+GetInRelease: no
+VerifyRelease: blindtrust
+FilterList: deinstall tcmalloc2.list
+Architectures: amd64

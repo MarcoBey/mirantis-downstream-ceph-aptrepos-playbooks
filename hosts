@@ -1,0 +1,4 @@
+[decapod-mirrors]
+localhost become=False ansible_connection=local
+[decapod-mirrors-dbg]
+localhost become=False ansible_connection=local

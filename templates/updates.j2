@@ -6,5 +6,10 @@ Architectures: amd64 i386 source
 {% if no_in_release|default(False) %}
 GetInRelease: no
 {% endif %}
+{% if no_debug_symbols|default(True)|bool and not(debug_symbols_only|default(False)|bool) %}
 FilterList: install ExcludeDbgList
+{% endif %}
+{% if debug_symbols_only|default(False)|bool %}
+FilterList: deinstall IncludeDbgList
+{% endif %}
 VerifyRelease: {{ gpg_key_id }}

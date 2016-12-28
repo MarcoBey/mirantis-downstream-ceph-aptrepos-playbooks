@@ -26,11 +26,25 @@
     os_release_numeric: "{{ item.value.os_release_numeric }}"
     ceph_release: "{{ item.value.ceph_release }}"
 
-- name: copy reprepro filter config
-  copy: >
-    src=./templates/ExcludeDbgList
+- name: create reprepro filter to skip debugging packages
+  template: >
+    src=./templates/FilterList.j2
     dest={{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/conf/ExcludeDbgList
     mode=0644
+  vars:
+    packages: "{{ binary_packages_with_dbg }}"
+    action: deinstall
+  when: "{{ no_debug_symbols|default(True)|bool }}"
+
+- name: create reprepro filter to include debugging packages only
+  template: >
+    src=./templates/FilterList.j2
+    dest={{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/conf/IncludeDbgList
+    mode=0644
+  vars:
+    packages: "{{ binary_packages_with_dbg }}"
+    action: install
+  when: "{{ debug_symbols_only|default(False)|bool }}"
 
 - name: fetch packages from main repo
   command: >

@@ -1,7 +1,7 @@
 ---
 
-src_repo_url: "http://172.18.76.59/Public/repos/ceph"
-repo_root: /srv/data/Public/repos/ceph-by-release
+src_repo_url: "http://localhost/Public/repos/ceph"
+subrepos_root: /srv/data/Public/repos/ceph-by-release
 gpg_key_id: A254F5F0
 
 supported_releases:
@@ -22,3 +22,21 @@ supported_releases:
     os_release: trusty
     os_release_numeric: "14.04"
 
+binary_packages_with_dbg:
+  - ceph-common
+  - ceph
+  - ceph-fs-common
+  - ceph-fuse
+  - ceph-mds
+  - ceph-test
+  - libcephfs1
+  - libcephfs-jni
+  - librados2
+  - libradosstriper1
+  - librbd1
+  - librgw2
+  - radosgw
+  - rbd-fuse
+  - rest-bench
+  - rbd-mirror
+  - rbd-nbd

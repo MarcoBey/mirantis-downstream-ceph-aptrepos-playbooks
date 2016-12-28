@@ -1,8 +1,16 @@
 ---
 
-- hosts: localhost
-  become: False
-  connection: local
+- hosts: decapod-mirrors
   tasks:
     - include: ./tasks/subrepo.yml
       with_dict: "{{ supported_releases }}"
+  vars:
+    repo_root: "{{ subrepos_root }}"
+
+- hosts: decapod-mirros-dbg
+  tasks:
+    - include: ./tasks/subrepo.yml
+      with_dict: "{{ supported_releases }}"
+  vars:
+    repo_root: "{{ subrepos_root }}-dbg"
+    debug_symbols_only: true

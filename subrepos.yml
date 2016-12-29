@@ -4,6 +4,8 @@
   tasks:
     - include: ./tasks/subrepo.yml
       with_dict: "{{ supported_releases }}"
+    - include: ./tasks/rsync.yml
+      with_dict: "{{ supported_releases }}"
   vars:
     repo_root: "{{ subrepos_root }}"
 

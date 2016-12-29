@@ -1,0 +1,34 @@
+---
+
+# 1. upload new packages without removing the obsolete ones in order to not
+#    interrupt current repo users
+# 2. sync repo metadata. This announces the new packages, and stops advertising
+#    the obsolete ones. The obsolete packages are still available in order not
+#    interrupt clients who use the obsolete metadata
+# 3. (optional) purge the obsolete packages (disk space is not infinite)
+
+- name: make sure the remote pool and dists directories exist
+  command: >
+    rsync "{{ dry_run|default('--dry-run') }}" -avH
+    empty_repo/
+    "{{ public_mirror_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/"
+
+- name: upload packages to repo {{ item.value.ceph_release }}-{{ item.value.os_release }} pool
+  command: >
+    rsync "{{ dry_run|default('--dry-run') }}" -avcH
+    "{{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/pool/"
+    "{{ public_mirror_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/pool/"
+
+- name: sync repo {{ item.value.ceph_release }}-{{ item.value.os_release }} metadata
+  command: >
+    rsync "{{ dry_run|default('--dry-run') }}" --delete -avcH
+    "{{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/dists/"
+    "{{ public_mirror_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/dists/"
+
+- name: remove old packages from repo {{ item.value.ceph_release }}-{{ item.value.os_release }} pool
+  command: >
+    rsync "{{ dry_run|default('--dry-run') }}" --delete -avcH
+    "{{ repo_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/pool/"
+    "{{ public_mirror_root }}/{{ item.value.ceph_release }}-{{ item.value.os_release }}/pool/"
+  when: "{{ remove_obsolete_packages|default(False)|bool }}"
+

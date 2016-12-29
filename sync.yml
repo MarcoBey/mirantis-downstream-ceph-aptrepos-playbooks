@@ -1,0 +1,8 @@
+---
+
+- hosts: decapod-mirrors
+  tasks:
+    - include: ./tasks/rsync.yml
+      with_dict: "{{ supported_releases }}"
+  vars:
+    repo_root: "{{ subrepos_root }}"

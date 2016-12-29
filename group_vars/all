@@ -2,6 +2,7 @@
 
 src_repo_url: "http://localhost/Public/repos/ceph"
 subrepos_root: /srv/data/Public/repos/ceph-by-release
+public_mirror_root: "rsync://perestroika-repo-tst.infra.mirantis.net/decapod/ceph"
 gpg_key_id: A254F5F0
 
 supported_releases:

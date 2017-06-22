@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+gpg_info_file="$HOME/.cache/gpg-agent-info"
+
+if [ -f "$gpg_info_file" ]; then
+	. "$gpg_info_file"
+	export GPG_AGENT_INFO
+	export GPG_TTY=$(tty)
+	set +x
+	exec /usr/bin/gpg --use-agent $@
+else
+	echo "No GPG agent info found" >&2
+	set +x
+	exec /usr/bin/gpg $@
+fi
+

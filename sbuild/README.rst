@@ -8,6 +8,8 @@ Synopsis
 This playbook simplifies configuration of git-buildpackage and sbuild
 for building `Mirantis' downstream Ceph packages`_.
 
+.. _Mirantis' downstream Ceph packages: http://mirror.fuel-infra.org/decapod/ceph
+
 Prerequisites
 -------------
 
@@ -38,31 +40,31 @@ The drill
 #. Install ansible 2.2.x (or newer) on the control host, see `ansible installation instructions`_.
 #. Clone this very repository on the control host::
 
-   git clone https://github.com/asheplyakov/mirantis-downstream-ceph-aptrepos-playbooks.git
+     git clone https://github.com/asheplyakov/mirantis-downstream-ceph-aptrepos-playbooks.git
 
 #. Add the build host(s) to the inventory file (use the `hosts.sample` file as an example)::
 
-   cd mirantis-downstream-ceph-aptrepos-playbooks/sbuild
-   cp hosts.sample hosts
-   vim hosts
+     cd mirantis-downstream-ceph-aptrepos-playbooks/sbuild
+     cp hosts.sample hosts
+     vim hosts
 
 #. Specify your name, email, and the GPG key id in the `group_vars/all` file
    under `maintainer` dict.
 
 #. Check if the build host is reachable::
 
-   ansible -m ping -i hosts all
+     ansible -m ping -i hosts all
 
 #. Run the playbook::
 
-   ansible-playbook -i hosts site.yml
+     ansible-playbook -i hosts site.yml
 
 
 Where to go from here?
 ----------------------
 
-Now the build host has a clone Mirantis' downstream Ceph package code in `~/pkg-ceph`,
-and tools configured to build it. The package can be built with::
+Now the build host has a clone Mirantis' downstream Ceph package code in the `~/pkg-ceph`
+directory, and tools ready to build it. The package can be built with::
 
   ./debian/pkgbuild.sh
 

@@ -1,0 +1,13 @@
+---
+
+- include: sbuild.yml
+# note: no `become` here, some task must be done as ordinary user
+
+- include: ccache.yml
+  become: True
+
+- include: reprepro.yml
+  become: True
+
+- include: clonecode.yml
+

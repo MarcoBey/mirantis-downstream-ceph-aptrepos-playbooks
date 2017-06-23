@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+MYDIR="${0%/*}"
+export CCACHE_DIR=$MYDIR
+export CCACHE_UMASK=002
+export PATH=/usr/lib/ccache:$PATH
+exec "$@"

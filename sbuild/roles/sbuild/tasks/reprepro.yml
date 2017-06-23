@@ -1,0 +1,31 @@
+---
+# Configure staging APT repo (which holds the build results)
+
+- name: install reprrepro tool
+  apt:
+    name: reprepro
+    state: latest
+
+- name: create staging APT repo directory
+  file: >
+    path={{ staging_repo_dir }}
+    owner={{ ansible_user_id }}
+    group=sbuild
+    mode=0755
+    state=directory
+
+- name: create staging APT repo configuration directory
+  file: >
+    path={{ staging_repo_dir }}/conf
+    owner={{ ansible_user_id }}
+    group=sbuild
+    mode=2775
+    state=directory
+
+- name: create staging APT repo reprepro configuration
+  template: >
+    src=distributions.j2
+    dest={{ staging_repo_dir }}/conf/distributions
+    owner={{ ansible_user_id }}
+    group=sbuild
+    mode=0644

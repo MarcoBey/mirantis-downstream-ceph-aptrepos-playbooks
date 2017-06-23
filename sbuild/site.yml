@@ -1,0 +1,6 @@
+---
+
+- hosts:
+    - sbuilds
+  roles: 
+    - sbuild

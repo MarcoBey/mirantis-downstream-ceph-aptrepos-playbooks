@@ -1,0 +1,71 @@
+---
+
+- name: install Debian development packages
+  apt: >
+    name={{ item }}
+    state=latest
+  with_items:
+    - "build-essential"
+    - devscripts
+    - fakeroot
+    - sbuild
+    - "ubuntu-dev-tools"
+  become: True
+
+- name: generate sbuild key
+  command: sbuild-update --keygen
+  become: True
+
+- name: add the user to sbuild group
+  command: sbuild-adduser {{ ansible_user_id }}
+  become: True
+
+- name: generate sbuild key
+  command: sbuild-update --keygen
+  become: True
+
+- name: add the user to sbuild group
+  command: sbuild-adduser {{ ansible_user_id }}
+  become: True
+
+- name: find out remote user home directory
+  shell: >
+    getent passwd {{ ansible_user_id }} | cut -d ':' -f 6
+  register:
+    remote_home
+  become: False
+
+- name: create ~/.sbuildrc file
+  template: >
+    src=sbuildrc.j2
+    dest={{ remote_home.stdout }}/.sbuildrc
+    owner={{ ansible_user_id }}
+    mode=0644
+  vars:
+    concurrency_level: "{{ build_concurrency_level|default(ansible_processor_cores) }}"
+    gpg_key_id: "{{ maintainer.gpg_key_id }}"
+  become: False
+
+- name: check if the sbuild chroot already exists
+  command: >
+    schroot -c source:{{ os_release }}-amd64 --directory / -u root -- /bin/true
+  register: schroot_exists
+  failed_when: False
+  become: True
+
+# XXX: mk-sbuild should be run as the ordinary user (who is going to use sbuild).
+# However current user is not in the sbuild group yet. Although sbuild-adduser
+# has been invoked, the change takes effect on next login, which won't happen
+# if ansible uses persistent SSH connections (which is the default).
+- name: create {{ os_release }} sbuild chroot
+  command: >
+    su -l {{ ansible_user_id }} -c "mk-sbuild
+    --name={{ os_release }}
+    --debootstrap-include=eatmydata,ccache,gnupg
+    --skip-proposed
+    --debootstrap-mirror={{ ubuntu_mirror }}
+    {{ os_release }}"
+  become: True
+  when:
+    - schroot_exists.rc != 0 
+

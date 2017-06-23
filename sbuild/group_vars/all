@@ -1,0 +1,16 @@
+---
+
+ceph_release: jewel
+
+# os_release: xenial
+# os_release_numeric: "16.04"
+# ubuntu_mirror: "http://ru.archive.ubuntu.com/ubuntu"
+
+maintainer:
+  name: "Alexey Sheplyakov"
+  email: "asheplyakov@mirantis.com"
+  gpg_key_id: A254F5F0
+
+# staging_repo path set here must match the one in pkg-ceph/debian/pkgbuild.sh
+# staging_repo_dir: /srv/data/Public/repos/ceph
+

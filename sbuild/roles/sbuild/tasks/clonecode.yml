@@ -1,0 +1,39 @@
+---
+
+- name: install git and git-buildpackage
+  apt: >
+    name={{ item }}
+    state=latest
+  with_items:
+    - git
+    - git-buildpackage
+    - debhelper
+    - dh-autoreconf
+    - dh-systemd
+    - dh-python
+    - javahelper
+  become: True
+
+- name: check if a local clone of pkg-ceph repository exists
+  stat:
+    path: "{{ remote_home.stdout }}/pkg-ceph/.git"
+  register:
+    git_dir_stat
+  failed_when: False
+  become: False
+
+- name: clone the pkg-ceph repository
+  command: >
+    git clone -b {{ ceph_release }}-{{ os_release }}
+    {{ pkg_ceph_repo }}
+    {{ remote_home.stdout }}/pkg-ceph 
+  become: False
+  when:
+    - not(git_dir_stat.stat.isdir is defined and git_dir_stat.stat.isdir)
+
+- name: fetch the code from public repository
+  command: >
+    git --git-dir={{ remote_home.stdout }}/pkg-ceph/.git fetch origin
+  become: False
+  when:
+    - git_dir_stat.stat.isdir is defined and git_dir_stat.stat.isdir

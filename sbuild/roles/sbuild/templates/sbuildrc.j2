@@ -1,0 +1,7 @@
+$build_arch_all = 1;
+$build_source = 1;
+$distribution = '{{ os_release }}';
+$ENV{'DEB_BUILD_OPTIONS'} = 'parallel={{ concurrency_level }}';
+$key_id='{{ gpg_key_id }}';
+# Perl needs this:
+1;

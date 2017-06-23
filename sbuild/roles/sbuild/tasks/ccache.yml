@@ -1,0 +1,45 @@
+---
+# setup ccache directory, and make sure it gets mounted in the sbuild chroot
+
+- name: install ccache
+  apt:
+    name: ccache
+    state: latest
+
+- name: create ccache directory
+  file: >
+    path={{ ccache_volume }}
+    owner=root
+    group=sbuild
+    mode=2775
+    state=directory
+
+- name: set the maximal ccache size
+  command: >
+    ccache --max-size {{ ccache_max_size }}
+  environment:
+    CCACHE_DIR: "{{ ccache_volume }}"
+
+- name: copy ccache sbuild setup script
+  copy: >
+    src=templates/sbuild-ccache-setup
+    dest="{{ ccache_volume }}/sbuild-setup"
+    owner=root
+    group=root
+    mode=0755
+
+- name: create ccache placeholder directory in sbuild chroot
+  command: >
+    schroot -c source:{{ os_release }}-amd64 -u root --directory=/ -- mkdir -m 755 -p {{ ccache_volume }}
+
+- name: ensure ccache directory is bind mounted in sbuild chroot
+  lineinfile: >
+    dest=/etc/schroot/sbuild/fstab
+    state=present
+    line="{{ ccache_volume }} {{ ccache_volume }} none rw,bind 0 0"
+
+- name: configure sbuild for use with ccache and eatmydata
+  lineinfile: >
+    dest=/etc/schroot/chroot.d/sbuild-{{ os_release }}-amd64
+    state=present
+    line="command-prefix={{ ccache_volume }}/sbuild-setup,eatmydata"

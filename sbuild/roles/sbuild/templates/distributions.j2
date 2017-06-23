@@ -1,0 +1,8 @@
+Origin: {{ maintainer.name }} <{{ maintainer.email }}>
+Label: sa-{{ ceph_release }}-{{ os_release }}
+Codename: {{ ceph_release }}-{{ os_release }}
+Version: {{ os_release_numeric }}
+Architectures: amd64 i386 source
+Components: main
+Description: Ceph {{ ceph_release }} built for Ubuntu {{ os_release_numeric }}
+SignWith: {{ maintainer.gpg_key_id }}!
